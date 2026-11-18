@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'presupuestos_screen.dart';
 import '../../providers/auth_provider.dart';
 import '../../core/formato.dart';
 import '../../core/iconos.dart';
@@ -47,6 +48,14 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Mis gastos'),
         actions: [
+          IconButton(
+            tooltip: 'Presupuestos',
+            icon: const Icon(Icons.pie_chart_outline),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const PresupuestosScreen()),
+            ),
+          ),
           IconButton(
             tooltip: 'Cerrar sesión',
             icon: const Icon(Icons.logout),
