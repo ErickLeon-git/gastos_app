@@ -17,4 +17,20 @@ class Validators {
     if (v.length > 100) return 'Máximo 100 caracteres';
     return null;
   }
+
+  static String? email(String? valor) {
+    final v = valor?.trim() ?? '';
+    if (v.isEmpty) return 'Ingresa tu correo';
+    final regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!regex.hasMatch(v)) return 'Correo no válido';
+    return null;
+  }
+
+  static String? password(String? valor) {
+    final v = valor ?? '';
+    if (v.isEmpty) return 'Ingresa tu contraseña';
+    if (v.length < 8) return 'Mínimo 8 caracteres';
+    if (!RegExp(r'[0-9]').hasMatch(v)) return 'Debe incluir un número';
+    return null;
+  }
 }
