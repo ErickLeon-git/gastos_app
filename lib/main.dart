@@ -15,6 +15,8 @@ import 'ui/screens/login_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('es_MX');
+  debugPrint('URL="${Env.supabaseUrl}"');
+  debugPrint('KEY length=${Env.supabaseAnonKey.length}');
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.supabaseAnonKey,

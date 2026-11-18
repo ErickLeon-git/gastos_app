@@ -52,8 +52,9 @@ class AuthProvider extends ChangeNotifier {
   String _traducir(String mensaje) {
     final m = mensaje.toLowerCase();
     if (m.contains('invalid login')) return 'Correo o contraseña incorrectos';
-    if (m.contains('already registered'))
+    if (m.contains('already registered')) {
       return 'Ese correo ya está registrado';
+    }
     if (m.contains('email not confirmed')) return 'Confirma tu correo primero';
     return 'No se pudo completar la operación';
   }
