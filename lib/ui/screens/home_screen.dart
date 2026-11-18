@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/auth_provider.dart';
 import '../../core/formato.dart';
 import '../../core/iconos.dart';
 import '../../models/gasto.dart';
@@ -43,7 +44,16 @@ class HomeScreen extends StatelessWidget {
     final p = context.watch<GastoProvider>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Mis gastos')),
+      appBar: AppBar(
+        title: const Text('Mis gastos'),
+        actions: [
+          IconButton(
+            tooltip: 'Cerrar sesión',
+            icon: const Icon(Icons.logout),
+            onPressed: () => context.read<AuthProvider>().cerrarSesion(),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _abrirFormulario(context),
         child: const Icon(Icons.add),
