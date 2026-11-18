@@ -54,6 +54,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _abrirFormulario(context),
+        child: const Icon(Icons.add),
+      ),
       body: switch (p.estado) {
         EstadoCarga.inicial || EstadoCarga.cargando => const Center(
           child: CircularProgressIndicator(),
@@ -123,7 +127,17 @@ class HomeScreen extends StatelessWidget {
                               subtitle: Text(
                                 '${cat?.nombre ?? 'Sin categoría'} · ${Formato.fecha(g.fecha)}',
                               ),
-                              trailing: Text(Formato.moneda(g.monto)),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (g.rutaFoto != null)
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 8),
+                                      child: Icon(Icons.receipt_long, size: 18),
+                                    ),
+                                  Text(Formato.moneda(g.monto)),
+                                ],
+                              ),
                               onTap: () => _abrirFormulario(context, g),
                             ),
                           );

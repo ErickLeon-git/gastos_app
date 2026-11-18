@@ -15,13 +15,18 @@ import 'ui/screens/login_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('es_MX');
-  debugPrint('URL="${Env.supabaseUrl}"');
-  debugPrint('KEY length=${Env.supabaseAnonKey.length}');
+
+  assert(
+    Env.supabaseUrl.isNotEmpty && Env.supabaseAnonKey.isNotEmpty,
+    'Faltan SUPABASE_URL o SUPABASE_ANON_KEY. Ejecuta con --dart-define-from-file=env.json',
+  );
+
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.supabaseAnonKey,
     authOptions: FlutterAuthClientOptions(localStorage: SecureLocalStorage()),
   );
+
   runApp(
     MultiProvider(
       providers: [

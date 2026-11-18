@@ -6,6 +6,7 @@ import '../../core/formato.dart';
 import '../../core/validators.dart';
 import '../../models/gasto.dart';
 import '../../providers/gasto_provider.dart';
+import '../widgets/ticket_picker.dart';
 
 class GastoFormScreen extends StatefulWidget {
   const GastoFormScreen({super.key, this.gasto});
@@ -20,6 +21,7 @@ class _GastoFormScreenState extends State<GastoFormScreen> {
   late final TextEditingController _montoCtrl;
   late final TextEditingController _descCtrl;
   String? _categoriaId;
+  String? _rutaFoto;
   late DateTime _fecha;
   bool _guardando = false;
 
@@ -32,6 +34,7 @@ class _GastoFormScreenState extends State<GastoFormScreen> {
     _montoCtrl = TextEditingController(text: g?.monto.toString() ?? '');
     _descCtrl = TextEditingController(text: g?.descripcion ?? '');
     _categoriaId = g?.categoriaId;
+    _rutaFoto = g?.rutaFoto;
     _fecha = g?.fecha ?? DateTime.now();
   }
 
@@ -62,7 +65,7 @@ class _GastoFormScreenState extends State<GastoFormScreen> {
       descripcion: _descCtrl.text.trim(),
       fecha: _fecha,
       categoriaId: _categoriaId!,
-      rutaFoto: widget.gasto?.rutaFoto,
+      rutaFoto: _rutaFoto,
     );
 
     final ok = await context.read<GastoProvider>().guardar(
@@ -138,6 +141,11 @@ class _GastoFormScreenState extends State<GastoFormScreen> {
               leading: const Icon(Icons.calendar_today),
               title: Text(Formato.fecha(_fecha)),
               onTap: _elegirFecha,
+            ),
+            const SizedBox(height: 16),
+            TicketPicker(
+              ruta: _rutaFoto,
+              onChanged: (r) => setState(() => _rutaFoto = r),
             ),
             const SizedBox(height: 24),
             FilledButton(

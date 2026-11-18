@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../services/foto_service.dart';
 import '../data/repositories/categoria_repository.dart';
 import '../data/repositories/gasto_repository.dart';
 import '../models/categoria.dart';
@@ -62,7 +63,9 @@ class GastoProvider extends ChangeNotifier {
 
   Future<void> eliminar(String id) async {
     try {
+      final gasto = _gastos.where((g) => g.id == id).firstOrNull;
       await _gastoRepo.eliminar(id);
+      await FotoService().borrar(gasto?.rutaFoto);
       await cargar();
     } catch (e) {
       mensajeError = 'No se pudo eliminar el gasto';
