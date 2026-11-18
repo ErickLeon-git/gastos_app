@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/auth_provider.dart';
 import '../../core/formato.dart';
 import '../../core/iconos.dart';
 import '../../models/gasto.dart';
@@ -44,15 +43,10 @@ class HomeScreen extends StatelessWidget {
     final p = context.watch<GastoProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mis gastos'),
-        actions: [
-          IconButton(
-            tooltip: 'Cerrar sesión',
-            icon: const Icon(Icons.logout),
-            onPressed: () => context.read<AuthProvider>().cerrarSesion(),
-          ),
-        ],
+      appBar: AppBar(title: const Text('Mis gastos')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _abrirFormulario(context),
+        child: const Icon(Icons.add),
       ),
       body: switch (p.estado) {
         EstadoCarga.inicial || EstadoCarga.cargando => const Center(
@@ -123,7 +117,17 @@ class HomeScreen extends StatelessWidget {
                               subtitle: Text(
                                 '${cat?.nombre ?? 'Sin categoría'} · ${Formato.fecha(g.fecha)}',
                               ),
-                              trailing: Text(Formato.moneda(g.monto)),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (g.rutaFoto != null)
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 8),
+                                      child: Icon(Icons.receipt_long, size: 18),
+                                    ),
+                                  Text(Formato.moneda(g.monto)),
+                                ],
+                              ),
                               onTap: () => _abrirFormulario(context, g),
                             ),
                           );
