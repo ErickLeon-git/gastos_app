@@ -13,6 +13,7 @@ import 'ui/screens/home_screen.dart';
 import 'ui/screens/login_screen.dart';
 import 'data/repositories/presupuesto_repository.dart';
 import 'providers/presupuesto_provider.dart';
+import 'services/notificacion_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,8 @@ Future<void> main() async {
     authOptions: FlutterAuthClientOptions(localStorage: SecureLocalStorage()),
   );
 
+  await NotificacionService.instance.init();
+  await NotificacionService.instance.programarRecordatorioSemanal();
   runApp(
     MultiProvider(
       providers: [
