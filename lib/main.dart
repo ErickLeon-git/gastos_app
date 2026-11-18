@@ -11,6 +11,8 @@ import 'providers/gasto_provider.dart';
 import 'services/secure_local_storage.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/login_screen.dart';
+import 'data/repositories/presupuesto_repository.dart';
+import 'providers/presupuesto_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +36,9 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (_) =>
               GastoProvider(GastoRepository(), CategoriaRepository())..cargar(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PresupuestoProvider(PresupuestoRepository())..cargar(),
         ),
       ],
       child: const GastosApp(),

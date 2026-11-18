@@ -33,4 +33,13 @@ class Validators {
     if (!RegExp(r'[0-9]').hasMatch(v)) return 'Debe incluir un número';
     return null;
   }
+
+  static String? limite(String? valor) {
+    if (valor == null || valor.trim().isEmpty) return 'Ingresa un límite';
+    final n = parseMonto(valor);
+    if (n == null) return 'Monto no válido';
+    if (n <= 0) return 'Debe ser mayor a 0';
+    if (n > 10000000) return 'El límite es demasiado alto';
+    return null;
+  }
 }
