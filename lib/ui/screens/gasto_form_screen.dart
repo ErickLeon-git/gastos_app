@@ -7,6 +7,8 @@ import '../../core/validators.dart';
 import '../../models/gasto.dart';
 import '../../providers/gasto_provider.dart';
 import '../widgets/ticket_picker.dart';
+import '../../providers/presupuesto_provider.dart';
+import '../../services/alerta_presupuesto_service.dart';
 
 class GastoFormScreen extends StatefulWidget {
   const GastoFormScreen({super.key, this.gasto});
@@ -68,10 +70,18 @@ class _GastoFormScreenState extends State<GastoFormScreen> {
       rutaFoto: _rutaFoto,
     );
 
-    final ok = await context.read<GastoProvider>().guardar(
-      gasto,
-      esNuevo: _esNuevo,
-    );
+    final gastoProvider = context.read<GastoProvider>();
+    final presupuestoProvider = context.read<PresupuestoProvider>();
+
+    final ok = await gastoProvider.guardar(gasto, esNuevo: _esNuevo);
+
+    if (ok) {
+      final estados = presupuestoProvider.calcular(
+        gastoProvider.gastos,
+        gastoProvider.categorias,
+      );
+      await AlertaPresupuestoService().evaluar(estados);
+    }
 
     if (!mounted) return;
     setState(() => _guardando = false);
