@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'presupuestos_screen.dart';
-import '../../providers/auth_provider.dart';
 import '../../core/formato.dart';
 import '../../core/iconos.dart';
 import '../../models/gasto.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/gasto_provider.dart';
+import 'estadisticas_screen.dart';
 import 'gasto_form_screen.dart';
+import 'presupuestos_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -50,7 +51,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             tooltip: 'Sincronizar',
-            icon: context.watch<GastoProvider>().sincronizando
+            icon: p.sincronizando
                 ? const SizedBox(
                     height: 20,
                     width: 20,
@@ -58,13 +59,21 @@ class HomeScreen extends StatelessWidget {
                   )
                 : const Icon(Icons.sync),
             onPressed: () async {
-              final p = context.read<GastoProvider>();
+              final prov = context.read<GastoProvider>();
               final messenger = ScaffoldMessenger.of(context);
-              await p.sincronizar();
+              await prov.sincronizar();
               messenger.showSnackBar(
-                SnackBar(content: Text(p.mensajeSync ?? 'Listo')),
+                SnackBar(content: Text(prov.mensajeSync ?? 'Listo')),
               );
             },
+          ),
+          IconButton(
+            tooltip: 'Estadísticas',
+            icon: const Icon(Icons.bar_chart),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const EstadisticasScreen()),
+            ),
           ),
           IconButton(
             tooltip: 'Presupuestos',
