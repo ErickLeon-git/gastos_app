@@ -13,6 +13,7 @@ import 'ui/screens/home_screen.dart';
 import 'ui/screens/login_screen.dart';
 import 'data/repositories/presupuesto_repository.dart';
 import 'providers/presupuesto_provider.dart';
+import 'core/cifrado_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,8 @@ Future<void> main() async {
     anonKey: Env.supabaseAnonKey,
     authOptions: FlutterAuthClientOptions(localStorage: SecureLocalStorage()),
   );
+
+  await CifradoService.instance.init();
 
   runApp(
     MultiProvider(
