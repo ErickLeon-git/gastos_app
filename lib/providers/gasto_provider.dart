@@ -5,6 +5,7 @@ import '../data/repositories/categoria_repository.dart';
 import '../data/repositories/gasto_repository.dart';
 import '../models/categoria.dart';
 import '../models/gasto.dart';
+import '../data/remote/gasto_remote.dart';
 
 enum EstadoCarga { inicial, cargando, listo, error }
 
@@ -65,6 +66,11 @@ class GastoProvider extends ChangeNotifier {
     try {
       final gasto = _gastos.where((g) => g.id == id).firstOrNull;
       await _gastoRepo.eliminar(id);
+      try {
+        await GastoRemote().eliminar(id);
+      } catch (_) {
+        /* sin conexión: queda en la nube hasta la próxima limpieza */
+      }
       await FotoService().borrar(gasto?.rutaFoto);
       await cargar();
     } catch (e) {
