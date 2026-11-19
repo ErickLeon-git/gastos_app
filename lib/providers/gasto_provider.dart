@@ -6,6 +6,7 @@ import '../data/repositories/gasto_repository.dart';
 import '../models/categoria.dart';
 import '../models/gasto.dart';
 import '../data/remote/gasto_remote.dart';
+import '../services/sync_service.dart';
 
 enum EstadoCarga { inicial, cargando, listo, error }
 
@@ -78,5 +79,22 @@ class GastoProvider extends ChangeNotifier {
       estado = EstadoCarga.error;
       notifyListeners();
     }
+  }
+
+  bool sincronizando = false;
+  String? mensajeSync;
+
+  Future<void> sincronizar() async {
+    sincronizando = true;
+    mensajeSync = null;
+    notifyListeners();
+
+    final r = await SyncService(_gastoRepo, GastoRemote()).sincronizar();
+    mensajeSync =
+        r.error ??
+        'Sincronizado: ${r.subidos} subidos, ${r.descargados} descargados';
+
+    sincronizando = false;
+    await cargar();
   }
 }
