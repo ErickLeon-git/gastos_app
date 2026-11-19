@@ -4,8 +4,11 @@ class Validators {
 
   static String? monto(String? valor) {
     if (valor == null || valor.trim().isEmpty) return 'Ingresa un monto';
-    final n = parseMonto(valor);
-    if (n == null) return 'Monto no válido';
+    final texto = valor.trim().replaceAll(',', '.');
+    if (!RegExp(r'^\d+(\.\d{1,2})?$').hasMatch(texto)) {
+      return 'Usa solo números (máx. 2 decimales)';
+    }
+    final n = double.parse(texto);
     if (n <= 0) return 'El monto debe ser mayor a 0';
     if (n > 1000000) return 'El monto es demasiado alto';
     return null;
@@ -36,8 +39,11 @@ class Validators {
 
   static String? limite(String? valor) {
     if (valor == null || valor.trim().isEmpty) return 'Ingresa un límite';
-    final n = parseMonto(valor);
-    if (n == null) return 'Monto no válido';
+    final texto = valor.trim().replaceAll(',', '.');
+    if (!RegExp(r'^\d+(\.\d{1,2})?$').hasMatch(texto)) {
+      return 'Usa solo números (máx. 2 decimales)';
+    }
+    final n = double.parse(texto);
     if (n <= 0) return 'Debe ser mayor a 0';
     if (n > 10000000) return 'El límite es demasiado alto';
     return null;
