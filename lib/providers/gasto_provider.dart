@@ -5,6 +5,8 @@ import '../data/repositories/categoria_repository.dart';
 import '../data/repositories/gasto_repository.dart';
 import '../models/categoria.dart';
 import '../models/gasto.dart';
+import '../data/remote/gasto_remote.dart';
+import '../services/sync_service.dart';
 
 enum EstadoCarga { inicial, cargando, listo, error }
 
@@ -65,6 +67,11 @@ class GastoProvider extends ChangeNotifier {
     try {
       final gasto = _gastos.where((g) => g.id == id).firstOrNull;
       await _gastoRepo.eliminar(id);
+      try {
+        await GastoRemote().eliminar(id);
+      } catch (_) {
+        /* sin conexión: queda en la nube hasta la próxima limpieza */
+      }
       await FotoService().borrar(gasto?.rutaFoto);
       await cargar();
     } catch (e) {
@@ -72,5 +79,22 @@ class GastoProvider extends ChangeNotifier {
       estado = EstadoCarga.error;
       notifyListeners();
     }
+  }
+
+  bool sincronizando = false;
+  String? mensajeSync;
+
+  Future<void> sincronizar() async {
+    sincronizando = true;
+    mensajeSync = null;
+    notifyListeners();
+
+    final r = await SyncService(_gastoRepo, GastoRemote()).sincronizar();
+    mensajeSync =
+        r.error ??
+        'Sincronizado: ${r.subidos} subidos, ${r.descargados} descargados';
+
+    sincronizando = false;
+    await cargar();
   }
 }

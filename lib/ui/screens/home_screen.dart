@@ -49,6 +49,24 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Mis gastos'),
         actions: [
           IconButton(
+            tooltip: 'Sincronizar',
+            icon: context.watch<GastoProvider>().sincronizando
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.sync),
+            onPressed: () async {
+              final p = context.read<GastoProvider>();
+              final messenger = ScaffoldMessenger.of(context);
+              await p.sincronizar();
+              messenger.showSnackBar(
+                SnackBar(content: Text(p.mensajeSync ?? 'Listo')),
+              );
+            },
+          ),
+          IconButton(
             tooltip: 'Presupuestos',
             icon: const Icon(Icons.pie_chart_outline),
             onPressed: () => Navigator.push(
