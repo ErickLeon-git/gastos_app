@@ -3,17 +3,18 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/cifrado_service.dart';
 import 'core/env.dart';
 import 'data/repositories/categoria_repository.dart';
 import 'data/repositories/gasto_repository.dart';
+import 'data/repositories/presupuesto_repository.dart';
 import 'providers/auth_provider.dart';
 import 'providers/gasto_provider.dart';
+import 'providers/presupuesto_provider.dart';
+import 'services/notificacion_service.dart';
 import 'services/secure_local_storage.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/login_screen.dart';
-import 'data/repositories/presupuesto_repository.dart';
-import 'providers/presupuesto_provider.dart';
-import 'services/notificacion_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,8 +31,10 @@ Future<void> main() async {
     authOptions: FlutterAuthClientOptions(localStorage: SecureLocalStorage()),
   );
 
+  await CifradoService.instance.init();
   await NotificacionService.instance.init();
   await NotificacionService.instance.programarRecordatorioSemanal();
+
   runApp(
     MultiProvider(
       providers: [

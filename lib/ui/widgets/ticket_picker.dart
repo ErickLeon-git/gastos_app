@@ -81,7 +81,7 @@ class _TicketPickerState extends State<TicketPicker> {
             height: 200,
             width: double.infinity,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => const SizedBox(
+            errorBuilder: (_, _, _) => const SizedBox(
               height: 120,
               child: Center(child: Text('No se pudo cargar la imagen')),
             ),
