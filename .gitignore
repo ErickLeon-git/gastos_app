@@ -51,3 +51,4 @@ env.json
 android/key.properties
 *.jks
 *.keystore
+release-assets/
