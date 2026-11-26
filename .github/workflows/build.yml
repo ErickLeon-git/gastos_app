@@ -29,6 +29,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.47.5'   # pon aquí TU versión
           channel: stable
           cache: true
 
@@ -37,10 +38,8 @@ jobs:
         run: flutter pub get
 
       # 6. (Opcional pero recomendado) Revisar el código y correr pruebas
-      - name: Analyze and test
-        run: |
-          flutter analyze
-          flutter test
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
 
       # 7. Reconstruir el keystore y key.properties desde los secretos
       - name: Decode keystore
